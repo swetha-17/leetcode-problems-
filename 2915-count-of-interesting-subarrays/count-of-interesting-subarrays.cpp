@@ -1,17 +1,20 @@
 class Solution {
 public:
     long long countInterestingSubarrays(vector<int>& nums, int modulo, int k) {
-         long ans = 0;
-    int prefix = 0;  // (number of nums[i] % modulo == k so far) % modulo
-    unordered_map<int, int> prefixCount{{0, 1}};
+         int prefixMod = 0;
+        int64_t count = 0;
+        unordered_map<int, int> freq{{0, 1}};
 
-    for (const int num : nums) {
-      if (num % modulo == k)
-        prefix = (prefix + 1) % modulo;
-      ans += prefixCount[(prefix - k + modulo) % modulo];
-      ++prefixCount[prefix];
-    }
+        for (int num : nums) {
+            if (num % modulo == k) {
+                prefixMod = (prefixMod + 1) % modulo;
+            }
 
-    return ans; 
+            int target = (prefixMod - k + modulo) % modulo;
+            count += freq[target];
+            ++freq[prefixMod];
+        }
+
+        return count;
     }
 };
